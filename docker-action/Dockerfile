@@ -1,5 +1,4 @@
-# swapt azure cli image for aws cli image
-FROM mcr.microsoft.com/azure-cli
+FROM amazon/aws-cli
 
 ARG contrast_security_credentials_file
 ARG aws_credentials_file
@@ -19,7 +18,7 @@ ENV CLUSTER_NAME ${cluster_name}
 ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
-RUN apk update && apk add --no-cache sed docker gawk
+RUN yum update && install -y yum-utils && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && install docker-ce docker-ce-cli containerd.io gawk sed
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

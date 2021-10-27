@@ -21,13 +21,10 @@ Other supported languages coming soon...
   - Example:
     ```sh
     {
-      "azure_application_id": "xxxxx",
-      "azure_tenant_id": "xxxxx",
-      "azure_client_secret": "xxxxx",
-      "azure_subscription_id": "xxxxx",
-      "azure_resource_group_name": "xxxxx",
-      "azure_region": "xxxxx",
-      "azure_container_registry": "xxxxx"
+      "aws_access_key_id": "xxxxx",
+      "aws_secret_access_key": "xxxxx",
+      "aws_default_region": "xxxxx",
+      "aws_container_registry": "xxxxx"
     }
     ```
 - `contrast-security-credentials-file`

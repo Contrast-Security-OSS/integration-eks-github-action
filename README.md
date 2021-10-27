@@ -1,4 +1,4 @@
-#eks-contrast-security-github-action
+# eks-contrast-security-github-action
 
 This github action builds and deploys a java application to the Amazon Elastic Kubernetes Service (EKS) with a Contrast Security Java Agent.
 

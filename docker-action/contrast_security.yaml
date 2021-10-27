@@ -1,0 +1,5 @@
+api:
+  url: __CONTRAST_TEAM_SERVER_URL__
+  api_key: __API_KEY__
+  service_key: __SERVICE_KEY__
+  user_name: __CONTRAST_TEAM_USERNAME__

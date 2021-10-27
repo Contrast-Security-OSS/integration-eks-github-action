@@ -1,0 +1,38 @@
+name: 'Contrast Security AKS Build Deploy'
+description: 'Build and deploy a container application to Azure Kubernetes Service with a Contrast Security Agent'
+branding:
+  icon: 'check-square'
+  color: 'green'
+inputs:
+  azure-credentials-file:
+    description: 'The configuration file contents for Azure-specific logins, regions, etc...'
+    required: true
+  contrast-security-credentials-file:
+    description: 'The configuration file contents for the Contrast Security Java Agent - used to communication with Contrast Security Team Server'
+    required: true
+  application-manifest:
+    description: 'Application manifest file location required for kubernetes deployment'
+    required: true
+  application-dockerfile:
+    description: 'dockerfile location required for docker build'
+    required: true
+  application-output-image-name-tag:
+    description: 'output image name/tag that will be deployed to kubernetes cluster'
+    required: true
+  cluster-name:
+    description: 'aks cluster name'
+    required: true
+  application-artifact:
+    description: 'artifacts location associated with the docker build'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.azure-credentials-file }}
+    - ${{ inputs.contrast-security-credentials-file }}
+    - ${{ inputs.application-manifest }}
+    - ${{ inputs.application-dockerfile }}
+    - ${{ inputs.application-output-image-name-tag }}
+    - ${{ inputs.cluster-name }}
+    - ${{ inputs.application-artifact }}

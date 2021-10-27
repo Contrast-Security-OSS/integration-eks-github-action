@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  #creationTimestamp: null
+  labels:
+    app: petclinic
+  name: petclinic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petclinic
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+        - image: arey/springboot-petclinic
+          name: springboot-petclinic
+          ports:
+            - containerPort: 9999
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+spec:
+  type: LoadBalancer
+  selector:
+    app: petclinic
+  ports:
+    - port: 8080
+      targetPort: 9999
+      protocol: TCP
+      name: http

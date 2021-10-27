@@ -1,21 +1,22 @@
-# aks-contrast-security-github-action
+#
+eks-contrast-security-github-action
 
-This github action builds and deploys a java application to the Azure Kubernetes Service (AKS) with a Contrast Security Java Agent.
+This github action builds and deploys a java application to the Amazon Elastic Kubernetes Service (EKS) with a Contrast Security Java Agent.
 
 Other supported languages coming soon...
 
 ## Prerequisites
 
-- An Azure Service Principle with enough permissions to: 
-    - Deploy an application to Azure Kubernetes Service (AKS)
+- An AWS User with enough permissions (IAM Roles) to: 
+    - Deploy an application to Amazon Elasatic Kubernetes Service (EKS)
     - Deploy a volume
     - Create a secret 
 - A valid Contrast Security account
-- Prepopulated Contrast Security and Azure JSON objects - details within 'Inputs' section
+- Prepopulated Contrast Security and Amazon AWS JSON objects - details within 'Inputs' section
 
 ## Inputs
-- `azure-credentials-file`
-  - Description: 'The configuration file contents for Azure-specific logins, regions, etc...'
+- `aws-credentials-file`
+  - Description: 'The configuration file contents for Amazon AWS-specific logins, regions, etc...'
   - REQUIRED: true
   - Default: No Default Value
   - Example:
@@ -75,12 +76,12 @@ Can be found at these links:
 ## Example Use
 
 ```sh
-- name: Contrast Security AKS Build Deploy
-        uses: Contrast-Security-OSS/aks-github-action@v0.5
+- name: Contrast Security EKS Build Deploy
+        uses: Contrast-Security-OSS/eks-github-action@main
         id: contrast-build-deploy
         with:
           contrast-security-credentials-file: ${{ secrets.CONTRAST_CREDS_FILE }}
-          azure-credentials-file: ${{ secrets.AZURE_CREDS_FILE }}
+          aws-credentials-file: ${{ secrets.AWS_CREDS_FILE }}
           application-manifest: ${{ env.APPLICATION_MANIFEST }}
           application-dockerfile: ${{ env.APPLICATION_DOCKERFILE }}
           application-output-image-name-tag: ${{ env.IMAGE_NAME_TAG }}

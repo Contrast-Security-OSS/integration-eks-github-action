@@ -9,8 +9,7 @@
 
 #echo "creating environment variables from coded constants..."
 #echo "-------------------------------------------"
-export AZURE_ADAL_LOGGING_ENABLED=1
-export AZURE_CONTRAST_JAVA_AGENT_DOWNLOAD_URL="https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.contrastsecurity&a=contrast-agent&v=LATEST"
+export AWS_CONTRAST_JAVA_AGENT_DOWNLOAD_URL="https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.contrastsecurity&a=contrast-agent&v=LATEST"
 #echo "-------------------------------------------"
 
 # echo "mapping environment variables to inputs..."
@@ -52,41 +51,35 @@ fi
 # echo "contrast-application-version: $CONTRAST_APPLICATION_VERSION"
 # echo "---------------------------------"
 
-if [ -z "$AZURE_CREDENTIALS_FILE" ]; then
-    printf '%s\n' "No Azure credentials file passed via input." >&2
+if [ -z "$AWS_CREDENTIALS_FILE" ]; then
+    printf '%s\n' "No AWS credentials file passed via input." >&2
     exit 1
 else
-    echo "$AZURE_CREDENTIALS_FILE" >> azure.json
-#    echo "azure_credentials_file value:"
-#    cat azure.json
-#    cat azure.json | jq '.'
-    echo "Azure configuration file found"
+    echo "$AWS_CREDENTIALS_FILE" >> aws.json
+#    echo "aws_credentials_file value:"
+#    cat aws.json
+#    cat aws.json | jq '.'
+    echo "AWS configuration file found"
     echo "parsing configuration file and setting to environment variables..."
 #    echo "quick test"
 #    echo "-----------"
-#    cat azure.json | jq -r '.azure_tenant_id'
-    echo "mapping..."
-    export AZURE_CONTAINER_REGISTRY=$(cat azure.json | jq -r '.azure_container_registry')
-    export AZURE_TENANT_ID=$(cat azure.json | jq -r '.azure_tenant_id')
-    export AZURE_CLIENT_SECRET=$(cat azure.json | jq -r '.azure_client_secret')
-    export AZURE_SUBSCRIPTION_ID=$(cat azure.json | jq -r '.azure_subscription_id')
-    export AZURE_REGION=$(cat azure.json | jq -r '.azure_region')
-    export AZURE_RESOURCE_GROUP_NAME=$(cat azure.json | jq -r '.azure_resource_group_name')
-    export AZURE_APPLICATION_ID=$(cat azure.json | jq -r '.azure_application_id')
-    echo "parsing and mapping complete."
-#    echo "removing azure.json..."
-    rm -f azure.json
+#    -- UPDATE cat aws.json | jq -r '.aws_tenant_id'
+    echo "mapping and configuring aws cli..."
+    export AWS_CONTAINER_REGISTRY=$(cat aws.json | jq -r '.aws_container_registry')
+    export AWS_ACCESS_KEY_ID=$(cat aws.json | jq -r '.aws_access_key_id')
+    export AWS_SECRET_ACCESS_KEY=$(cat aws.json | jq -r '.aws_secret_access_key')
+    export AWS_DEFAULT_REGION=$(cat aws.json | jq -r '.aws_region')
+    echo "parsing, mapping, and configuration complete."
+#    echo "removing aws.json..."
+    rm -f aws.json
     echo "-----------------------------"
 fi
 
 # echo "results:"
-# echo "azure-application-id: $AZURE_APPLICATION_ID"
-# echo "azure-tenant-id: $AZURE_TENANT_ID"
-# echo "azure-client-secret: $AZURE_CLIENT_SECRET"
-# echo "azure-subscription-id: $AZURE_SUBSCRIPTION_ID"
-# echo "azure-region: $AZURE_REGION"
-# echo "azure-resource-group-name: $AZURE_RESOURCE_GROUP_NAME"
-# echo "azure-sp-service-name: $AZURE_SP_SERVICE_NAME"
+# echo "aws-container-registry: $AWS_CONTAINER_REGISTRY"
+# echo "aws-access-key-id: $AWS_ACCESS_KEY_ID"
+# echo "aws-secret-access-key: $AWS_SECRET_ACCESS_KEY"
+# echo "aws-region: $AWS_DEFAULT_REGION"
 # echo "---------------------------------"
 
 #if [ -z "$APPLICATION_DOCKERFILE" ]; then
@@ -132,8 +125,8 @@ echo "-------------------------------------------"
 # download Contrast Security java agent
 echo "++downloading contrast security java agent..."
 #echo "-------------------------------------------"
-curl -L "${AZURE_CONTRAST_JAVA_AGENT_DOWNLOAD_URL}" -o contrast.jar
-CONTRAST_URL=$(curl "${AZURE_CONTRAST_JAVA_AGENT_DOWNLOAD_URL}" -s -L -I -o /dev/null -w '%{url_effective}')
+curl -L "${AWS_CONTRAST_JAVA_AGENT_DOWNLOAD_URL}" -o contrast.jar
+CONTRAST_URL=$(curl "${AWS_CONTRAST_JAVA_AGENT_DOWNLOAD_URL}" -s -L -I -o /dev/null -w '%{url_effective}')
 echo $CONTRAST_URL
 #CONTRAST_AGENT_VERSION=$(find . -name '*contrast-agent*' | grep -o '[0-9]*') 
 echo "Contrast Security agent version is: $CONTRAST_AGENT_VERSION"
@@ -165,46 +158,43 @@ echo "-------------------------------------------"
 
 # create image from running container
 echo "creating container image from running container..."
-docker commit $RUNNING_CONTAINER_ID ${AZURE_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG}
+docker commit $RUNNING_CONTAINER_ID ${AWS_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG}
 echo "successfully created container image."
 echo "verifying local docker image..."
 echo "-------------------------------------------"
 docker images
 echo "-------------------------------------------"
 
-# docker login to container registry url
+# docker login to container registry url --- UPDATE
 echo "logging into container registry..."
-docker login ${AZURE_CONTAINER_REGISTRY} -u ${AZURE_APPLICATION_ID} -p ${AZURE_CLIENT_SECRET} 
+docker login ${AWS_CONTAINER_REGISTRY} -u ${AWS_APPLICATION_ID} -p ${AWS_CLIENT_SECRET} 
 echo "successfully logged into container registry."
 echo "-------------------------------------------"
 
 # docker push to registry url
 echo "pushing image to container registry..."
-docker push ${AZURE_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG}
+docker push ${AWS_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG}
 echo "successfully pushed container image to registry."
 echo "-------------------------------------------"
 
-# install azure kubernetes service cli
-echo "++installing azure kubernetes service cli..."
-az aks install-cli;
-echo "++successfully installed azure kubernetes service cli"
+# install kubectl
+echo "++installing kubectl via yum package manager..."
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+yum install -y kubectl
+echo "++successfully installed kubectl"
 echo "-------------------------------------------"
 
-# log into azure cli using service principal and secret
-echo "++logging into azure cli..."
-az login --service-principal -u "${AZURE_APPLICATION_ID}" -p "${AZURE_CLIENT_SECRET}" --tenant "${AZURE_TENANT_ID}"; 
-echo "++successfully logged into azure cli"
-echo "-------------------------------------------"
-
-# set subscription for cli interaction
-echo "++setting subscription to cli interaction..."
-az account set --subscription "${AZURE_SUBSCRIPTION_ID}"; 
-echo "++successfully set subscription to cli interaction"
-echo "-------------------------------------------"
-
-# configure kubectl to connect to AKS cluster
+# configure kubectl to connect to EKS cluster
 echo "++configuring kubectl..."
-az aks get-credentials --resource-group ${AZURE_RESOURCE_GROUP_NAME} --name ${CLUSTER_NAME}
+aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${CLUSTER_NAME}
 echo "++successfully configured kubectl."
 echo "-------------------------------------------"
 
@@ -216,23 +206,7 @@ echo "-------------------------------------------"
 kubectl get deployments
 echo "-------------------------------------------"
 
-# deploy Contrast Security secret
-#echo "++replacing secret file placeholders with inputs from user..."
-#sed -i "s|__CONTRAST_TEAM_SERVER_URL__|${CONTRAST_API_URL}|g" contrast_security.yaml
-#sed -i "s|__API_KEY__|${CONTRAST_API_API_KEY}|g" contrast_security.yaml
-#sed -i "s|__SERVICE_KEY__|${CONTRAST_API_SERVICE_KEY}|g" contrast_security.yaml
-#sed -i "s|__CONTRAST_TEAM_USERNAME__|${CONTRAST_API_USERNAME}|g" contrast_security.yaml
-#echo "++contrast_security.yaml contents:"
-#echo "--------------------------------------------"
-#cat contrast_security.yaml
-#echo "--------------------------------------------"
-#echo "++creating Contrast Security secret from file..."
-#kubectl delete secret contrast-security
-#kubectl create secret generic contrast-security --from-file=./contrast_security.yaml
-#echo "++successfully created Contrast Security secret"
-#echo "-------------------------------------------"
-
-# deploy application into the Azure Kubernetes Service platform
+# deploy application into the Amazon Elastic Kubernetes Service platform
 echo "++deploying application manifests..."
 startDeploy='deployment.apps/'
 endSD=' '
@@ -278,14 +252,14 @@ echo "++confirming deployment details..."
 echo "--------------------------------------------"
 kubectl get deployments
 echo "--------------------------------------------"
-echo "++updated deployment $DEPLOYMENT_NAME container $CONTAINER_NAME image to ${AZURE_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG}"
+echo "++updated deployment $DEPLOYMENT_NAME container $CONTAINER_NAME image to ${AWS_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG}"
 echo "-------------------------------------------"
 
 # get application endpoint for kubernetes deployment
 echo "++retrieving endpoint information..."
-#AZURE_APPLICATION_URL=$(kubectl describe svc $SERVICE_NAME)
+#AWS_APPLICATION_URL=$(kubectl describe svc $SERVICE_NAME)
 echo "------------------------------------"
-#echo ${AZURE_APPLICATION_URL}
+#echo ${AWS_APPLICATION_URL}
 external_ip=""
 while [ -z $external_ip ]; do
   echo "Waiting for end point..."

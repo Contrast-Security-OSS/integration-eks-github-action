@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME_TAG: 'eks-petclinic-mark-testing:contrast-demo-1'
+  IMAGE_NAME_TAG: 'aws-contrast-webinar:contrast-demo-1'
   APPLICATION_MANIFEST: '/example/kubernetes/petclinic.yaml'
   APPLICATION_DOCKERFILE: '/example/docker/Dockerfile'
   CLUSTER_NAME: 'aws-contrast-webinar'
@@ -28,5 +28,5 @@ jobs:
         application-output-image-name-tag: ${{ env.IMAGE_NAME_TAG }}
         cluster-name: ${{ env.CLUSTER_NAME }}
         contrast-security-credentials-file: ${{ secrets.CONTRAST_CREDS_FILE }}
-        azure-credentials-file: ${{ secrets.AWS_CREDS_FILE }}
+        aws-credentials-file: ${{ secrets.AWS_CREDS_FILE }}
         application-artifact: ${{ env.APPLICATION_ARTIFACT }}

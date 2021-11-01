@@ -22,6 +22,7 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN yum install -y yum-utils
 RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+RUN yum-config-manager --enable docker-ce-nightly
 RUN yum install docker-ce docker-ce-cli containerd.io
 
 #RUN whoami
@@ -31,6 +32,7 @@ RUN yum install docker-ce docker-ce-cli containerd.io
 #RUN down root:docker /var/run/docker.sock
 #RUN usermod -aG docker root
 #RUN systemctl status docker
+
 RUN docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh

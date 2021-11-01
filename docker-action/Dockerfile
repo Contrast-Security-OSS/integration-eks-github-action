@@ -18,7 +18,7 @@ ENV CLUSTER_NAME ${cluster_name}
 ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
-RUN yum install -y yum-utils device-mapper-persistent-data lvm2123 fuse-overlayfs slirp4netns container-selinux && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save && yum install docker-ce docker-ce-cli containerd.io gawk sed
+RUN yum -y remove docker-common docker container-selinux docker-selinux docker-engine  && yum install -y yum-utils lvm2 device-mapper device-mapper-persistent-data device-mapper-event device-mapper-libs device-mapper-event-libs && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save && yum install docker-ce docker-ce-cli containerd.io
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

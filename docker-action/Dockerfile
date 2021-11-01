@@ -24,7 +24,7 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN amazon-linux-extras install docker
 #RUN service docker start
-#RUN usermod -a -G docker $USER
+RUN sudo usermod -a -G docker $USER
 RUN docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh

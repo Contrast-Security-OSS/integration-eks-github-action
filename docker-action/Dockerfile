@@ -22,9 +22,8 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN yum install -y yum-utils
 RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-RUN yum-config-manager --save --setopt=docker-ce-nightly.skip_if_unavailable=true
 RUN yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save
-RUN yum -y install slirp4netns fuse-overlayfs container-selinux
+RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum --enablerepo=docker-ce-stable-x86_64 install docker-ce-rootless-extras
 RUN yum install docker-ce docker-ce-cli containerd.io
 
 #RUN whoami

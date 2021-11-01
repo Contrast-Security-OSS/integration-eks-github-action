@@ -69,6 +69,7 @@ else
     export AWS_ACCESS_KEY_ID=$(cat aws.json | jq -r '.aws_access_key_id')
     export AWS_SECRET_ACCESS_KEY=$(cat aws.json | jq -r '.aws_secret_access_key')
     export AWS_DEFAULT_REGION=$(cat aws.json | jq -r '.aws_region')
+#    export AWS_CONTAINER_REGISTRY_USERNAME=$(cat aws.json | jq -r '.aws_container_registry_username')
     echo "parsing, mapping, and configuration complete."
 #    echo "removing aws.json..."
     rm -f aws.json
@@ -165,9 +166,9 @@ echo "-------------------------------------------"
 docker images
 echo "-------------------------------------------"
 
-# docker login to container registry url --- UPDATE
-echo "logging into container registry..."
-docker login ${AWS_CONTAINER_REGISTRY} -u ${AWS_APPLICATION_ID} -p ${AWS_CLIENT_SECRET} 
+# docker login to container registry url
+echo "retrieving docker login and logging into docker registry using login password..."
+aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_CONTAINER_REGISTRY} 
 echo "successfully logged into container registry."
 echo "-------------------------------------------"
 

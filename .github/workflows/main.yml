@@ -1,0 +1,32 @@
+name: Build and Deploy Java app to Amazon Elastic Kubernetes Service
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME_TAG: 'eks-petclinic-mark-testing:contrast-demo-1'
+  APPLICATION_MANIFEST: '/example/kubernetes/petclinic.yaml'
+  APPLICATION_DOCKERFILE: '/example/docker/Dockerfile'
+  CLUSTER_NAME: 'aws-contrast-webinar'
+  APPLICATION_ARTIFACT: '/example/docker/spring-petclinic-1.5.1.jar'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Contrast Security Amazon Elastic Kubernetes Service Build-Deploy
+      uses: Contrast-Security-OSS/eks-github-action@main
+      id: contrast-build-deploy
+      with:
+        application-manifest: ${{ env.APPLICATION_MANIFEST }}
+        application-dockerfile: ${{ env.APPLICATION_DOCKERFILE }}
+        application-output-image-name-tag: ${{ env.IMAGE_NAME_TAG }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        contrast-security-credentials-file: ${{ secrets.CONTRAST_CREDS_FILE }}
+        azure-credentials-file: ${{ secrets.AWS_CREDS_FILE }}
+        application-artifact: ${{ env.APPLICATION_ARTIFACT }}

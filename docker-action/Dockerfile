@@ -18,7 +18,7 @@ ENV CLUSTER_NAME ${cluster_name}
 ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
-RUN yum update && install yum-utils && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && install docker-ce docker-ce-cli containerd.io gawk sed
+RUN sudo yum install -y yum-utils && sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && sudo yum install docker-ce docker-ce-cli containerd.io gawk sed
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

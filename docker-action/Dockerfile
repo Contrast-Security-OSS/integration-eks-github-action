@@ -20,13 +20,11 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 #RUN yum install -y yum-utils lvm2 device-mapper device-mapper-persistent-data device-mapper-event device-mapper-libs device-mapper-event-libs && yum-config-manager --enable ol7_developer && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum --enablerepo=docker-ce-stable-x86_64 install docker-ce-rootless-extras && yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save && yum install docker-ce docker-ce-cli containerd.io
 
-#RUN yum update -y && amazon-linux-extras install docker && docker version
-RUN whoami
-RUN yum install -y sudo
+#RUN whoami
+#RUN yum install -y sudo
 RUN amazon-linux-extras install docker
-#RUN sudo groupadd docker
-#RUN sudo usermod -aG docker $USER
-RUN sudo docker version
+RUN usermod -aG docker root
+RUN docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

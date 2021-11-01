@@ -23,6 +23,8 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 #RUN whoami
 #RUN yum install -y sudo
 RUN amazon-linux-extras install docker
+RUN ls -la /var/run/docker.sock
+RUN down root:docker /var/run/docker.sock
 #RUN usermod -aG docker root
 #RUN systemctl status docker
 RUN docker version

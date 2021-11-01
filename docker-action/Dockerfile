@@ -24,7 +24,8 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 RUN yum install -y sudo
 RUN amazon-linux-extras install docker
 #RUN service docker start
-RUN sudo usermod -a -G docker $USER
+RUN sudo groupadd docker
+RUN sudo usermod -aG docker $USER
 RUN docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh

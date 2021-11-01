@@ -24,7 +24,7 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 RUN yum install -y sudo
 RUN amazon-linux-extras install docker
 #RUN service docker start
-RUN sudo groupadd docker
+#RUN sudo groupadd docker
 RUN sudo usermod -aG docker $USER
 RUN docker version
 

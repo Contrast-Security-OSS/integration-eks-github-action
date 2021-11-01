@@ -22,7 +22,7 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN yum install -y yum-utils
 RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-RUN yum-config-manager --enable docker-ce-nightly
+RUN yum-config-manager --save --setopt=docker-ce-nightly.skip_if_unavailable=true
 RUN yum install docker-ce docker-ce-cli containerd.io
 
 #RUN whoami

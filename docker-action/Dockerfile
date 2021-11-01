@@ -25,8 +25,8 @@ RUN yum install -y sudo
 RUN amazon-linux-extras install docker
 #RUN service docker start
 #RUN sudo groupadd docker
-RUN sudo usermod -aG docker $USER
-RUN docker version
+#RUN sudo usermod -aG docker $USER
+RUN sudo docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

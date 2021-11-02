@@ -50,7 +50,7 @@ Other supported languages coming soon...
   - Description: 'dockerfile location required for docker build'
   - REQUIRED: true
   - Default: No Default Value
-- `application-output-image-name-tag:
+- `application-output-image-name-tag`
   - Description: 'output image name/tag that will be deployed to kubernetes cluster'
   - REQUIRED: true
   - Default: No Default Value

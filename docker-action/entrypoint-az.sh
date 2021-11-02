@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x
+set -x
 
 #echo "Printing existing environment variables..."
 #echo "------------------------------------------"
@@ -115,6 +115,15 @@ echo "++Displaying incoming Dockerfile contents..."
 echo "---------------------------------------------"
 cat Dockerfile
 echo "---------------------------------------------"
+
+# log into aws cli via credentials
+echo "logging into aws cli..."
+aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+aws configure set region ${AWS_DEFAULT_REGION}
+aws configure set output json
+echo "successfully logged into aws cli"
+echo "-------------------------------------------"
 
 # docker build using passed application dockerfile and image name/tag
 echo "++application docker build started..."

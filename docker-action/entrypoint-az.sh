@@ -188,13 +188,13 @@ echo "successfully pushed container image to registry."
 echo "-------------------------------------------"
 
 # install kubectl
-echo "++installing kubectl..."
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
-chmod +x ./kubectl
-mv ./kubectl /usr/local/bin/kubectl
-kubectl version
-echo "++successfully installed kubectl"
-echo "-------------------------------------------"
+#echo "++installing kubectl..."
+#curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+#chmod +x ./kubectl
+#mv ./kubectl /usr/local/bin/kubectl
+#kubectl version
+#echo "++successfully installed kubectl"
+#echo "-------------------------------------------"
 
 # configure kubectl to connect to EKS cluster
 echo "++configuring kubectl..."

@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/azure-cli
+#FROM mcr.microsoft.com/azure-cli
+FROM alpine/k8s
 
 ARG contrast_security_credentials_file
 ARG aws_credentials_file
@@ -18,8 +19,7 @@ ENV CLUSTER_NAME ${cluster_name}
 ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
-RUN apk update && apk add --no-cache sed docker gawk python3 py3-pip && pip3 install --upgrade pip && pip3 install --no-cache-dir awscli && rm -rf /var/cache/apk/*
-RUN aws --version
+RUN apk update && apk add --no-cache sed docker gawk
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

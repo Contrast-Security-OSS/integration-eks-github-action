@@ -218,9 +218,9 @@ startService='service/'
 echo "++Returning results from kubernetes deployment..."
 echo "--------------------------------------------"
 KUBECTL_RESULTS=$(kubectl apply -f '/opt/deployment.yaml')
-echo "---------------"
-echo $KUBECTL_RESULTS
-echo "---------------"
+#echo "---------------"
+#echo $KUBECTL_RESULTS
+#echo "---------------"
 DEPLOYMENT_NAME=$(awk '$0=$2' FS="$startDeploy" RS="$endSD" <<< "$KUBECTL_RESULTS")
 SERVICE_NAME=$(awk '$0=$2' FS="$startService" RS="$endSD"  <<< "$KUBECTL_RESULTS")
 kubectl describe deployments $DEPLOYMENT_NAME
@@ -264,13 +264,13 @@ echo "-------------------------------------------"
 
 # get application endpoint for kubernetes deployment
 echo "++retrieving endpoint information..."
-#AWS_APPLICATION_URL=$(kubectl describe svc $SERVICE_NAME)
+AWS_APPLICATION_URL=$(kubectl describe svc $SERVICE_NAME)
 echo "------------------------------------"
-#echo ${AWS_APPLICATION_URL}
+echo ${AWS_APPLICATION_URL}
 external_ip=""
 while [ -z $external_ip ]; do
   echo "Waiting for end point..."
-  external_ip=$(kubectl get svc $SERVICE_NAME --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
+  external_ip=$(kubectl get svc $SERVICE_NAME -o jsonpath='{.status.loadBalancer.ingress[*].hostname}')
   [ -z "$external_ip" ] && sleep 10
 done
 external_port=$(kubectl describe svc $SERVICE_NAME | grep 'Port:' | grep -v 'NodePort:' | grep -v 'TargetPort:' | grep -o '[0-9]*')

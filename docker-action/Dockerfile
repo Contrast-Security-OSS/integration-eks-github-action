@@ -19,7 +19,7 @@ ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN apt-get update
-RUN apt-get install -y ca-certificates curl gnupg lsb-release unzip
+RUN apt-get install -y apt-utils ca-certificates curl gnupg lsb-release unzip
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install

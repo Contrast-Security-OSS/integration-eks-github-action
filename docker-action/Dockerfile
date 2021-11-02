@@ -19,13 +19,12 @@ ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y --no-install-recommends sudo unzip curl
+RUN apt-get install -y --no-install-recommends sudo unzip curl ca-certificates apt-transport-https software-properties-common
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
 RUN aws --version
 RUN apt update
-RUN sudo apt install apt-transport-https ca-certificates curl software-properties-common
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 RUN sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 RUN apt-cache policy docker-ce

@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM mcr.microsoft.com/azure-cli
 
 ARG contrast_security_credentials_file
 ARG aws_credentials_file
@@ -18,21 +18,8 @@ ENV CLUSTER_NAME ${cluster_name}
 ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y --no-install-recommends sudo unzip curl ca-certificates apt-transport-https software-properties-common gpg-agent
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
-RUN ./aws/install
+RUN apk update && apk add --no-cache sed docker gawk python3 py3-pip && pip3 install --upgrade pip && pip3 install --no-cache-dir awscli && rm -rf /var/cache/apk/*
 RUN aws --version
-RUN apt update
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-RUN sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-RUN apt-cache policy docker-ce
-RUN apt install -y --no-install-recommends docker-ce
-RUN usermod -aG docker root
-RUN su - root
-RUN groups
-RUN docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

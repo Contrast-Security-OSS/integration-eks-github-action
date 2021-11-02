@@ -218,6 +218,9 @@ startService='service/'
 echo "++Returning results from kubernetes deployment..."
 echo "--------------------------------------------"
 KUBECTL_RESULTS=$(kubectl apply -f '/opt/deployment.yaml')
+echo "---------------"
+echo $KUBECTL_RESULTS
+echo "---------------"
 DEPLOYMENT_NAME=$(awk '$0=$2' FS="$startDeploy" RS="$endSD" <<< "$KUBECTL_RESULTS")
 SERVICE_NAME=$(awk '$0=$2' FS="$startService" RS="$endSD"  <<< "$KUBECTL_RESULTS")
 kubectl describe deployments $DEPLOYMENT_NAME

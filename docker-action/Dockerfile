@@ -36,7 +36,7 @@ RUN whoami
 #RUN systemctl status docker
 
 RUN apt update
-RUN apt upgrade -y
+#RUN apt upgrade -y
 RUN apt install -y awscli
 RUN aws --version
 RUN apt-get install -y ca-certificates curl gnupg lsb-release

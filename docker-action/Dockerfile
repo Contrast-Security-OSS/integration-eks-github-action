@@ -29,7 +29,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 RUN sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 RUN apt-cache policy docker-ce
 RUN apt install -y --no-install-recommends docker-ce
-RUN systemctl status docker
+#RUN systemctl status docker
 RUN sudo usermod -aG docker ${USER}
 RUN su - ${USER}
 RUN groups

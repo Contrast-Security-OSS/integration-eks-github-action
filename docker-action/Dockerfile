@@ -19,7 +19,7 @@ ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y --no-install-recommends sudo unzip curl ca-certificates apt-transport-https software-properties-common
+RUN apt-get install -y --no-install-recommends sudo unzip curl ca-certificates apt-transport-https software-properties-common gpg-agent
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install

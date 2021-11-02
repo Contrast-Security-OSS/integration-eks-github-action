@@ -242,7 +242,7 @@ kubectl set env deployment/$DEPLOYMENT_NAME CONTRAST__AGENT__JAVA__STANDALONE_AP
 echo "updating deployment $DEPLOYMENT_NAME with environment variable CONTRAST__AGENT__LOGGER__STDERR..."
 kubectl set env deployment/$DEPLOYMENT_NAME CONTRAST__AGENT__LOGGER__STDERR=true
 echo "updating deployment $DEPLOYMENT_NAME with image..."
-kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=${AZURE_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG} -o yaml
+kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=${AWS_CONTAINER_REGISTRY}/${APPLICATION_OUTPUT_IMAGE_NAME_TAG} -o yaml
 echo "updating deployment with Contrast Security label..."
 echo "Returning deployment(s)..."
 echo "--------------------------------------------"

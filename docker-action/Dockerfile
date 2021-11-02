@@ -1,4 +1,5 @@
-FROM amazon/aws-cli
+#FROM amazon/aws-cli
+FROM ubuntu
 
 ARG contrast_security_credentials_file
 ARG aws_credentials_file
@@ -20,11 +21,11 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 #RUN yum install -y yum-utils lvm2 device-mapper device-mapper-persistent-data device-mapper-event device-mapper-libs device-mapper-event-libs && yum-config-manager --enable ol7_developer && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum --enablerepo=docker-ce-stable-x86_64 install docker-ce-rootless-extras && yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save && yum install docker-ce docker-ce-cli containerd.io
 
-RUN yum install -y yum-utils
-RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-RUN yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save
-RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum --enablerepo=docker-ce-stable-x86_64 install docker-ce-rootless-extras
-RUN yum install docker-ce docker-ce-cli containerd.io
+#RUN yum install -y yum-utils
+#RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+#RUN yum-config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/7/x86_64/stable" --save
+#RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum --enablerepo=docker-ce-stable-x86_64 install docker-ce-rootless-extras
+#RUN yum install docker-ce docker-ce-cli containerd.io
 
 #RUN whoami
 #RUN yum install -y sudo
@@ -33,6 +34,14 @@ RUN yum install docker-ce docker-ce-cli containerd.io
 #RUN down root:docker /var/run/docker.sock
 #RUN usermod -aG docker root
 #RUN systemctl status docker
+
+RUN sudo apt-get update
+RUN sudo apt install awscli
+RUN sudo apt-get install ca-certificates curl gnupg lsb-release
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN sudo apt-get update
+RUN sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 RUN docker version
 

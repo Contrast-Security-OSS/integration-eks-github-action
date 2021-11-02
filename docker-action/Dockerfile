@@ -19,16 +19,22 @@ ENV APPLICATION_ARTIFACT ${application_artifact}
 ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y --no-install-recommends sudo apt-utils ca-certificates curl gnupg lsb-release unzip
+RUN apt-get install -y --no-install-recommends sudo unzip curl
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
 RUN aws --version
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io
-RUN sudo docker version
+RUN apt update
+RUN sudo apt install apt-transport-https ca-certificates curl software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+RUN sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+RUN apt-cache policy docker-ce
+RUN apt install docker-ce
+RUN systemctl status docker
+RUN sudo usermod -aG docker ${USER}
+RUN su - ${USER}
+RUN groups
+RUN docker version
 
 COPY entrypoint-az.sh /opt/entrypoint.sh
 COPY /application-dockerfile/Dockerfile /opt/Dockerfile

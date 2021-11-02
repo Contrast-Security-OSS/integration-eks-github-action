@@ -27,7 +27,7 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 #RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum --enablerepo=docker-ce-stable-x86_64 install docker-ce-rootless-extras
 #RUN yum install docker-ce docker-ce-cli containerd.io
 
-#RUN whoami
+RUN whoami
 #RUN yum install -y sudo
 #RUN amazon-linux-extras install docker
 #RUN ls -la /var/run/docker.sock
@@ -35,13 +35,13 @@ ENV APPLICATION_ARTIFACT_2 ${application_artifact_2}
 #RUN usermod -aG docker root
 #RUN systemctl status docker
 
-RUN sudo apt-get update
-RUN sudo apt install awscli
-RUN sudo apt-get install ca-certificates curl gnupg lsb-release
+RUN apt-get update
+RUN apt install awscli
+RUN apt-get install ca-certificates curl gnupg lsb-release
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-RUN sudo apt-get update
-RUN sudo apt-get install docker-ce docker-ce-cli containerd.io
+RUN apt-get update
+RUN apt-get install docker-ce docker-ce-cli containerd.io
 
 RUN docker version
 

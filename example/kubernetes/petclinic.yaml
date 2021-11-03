@@ -36,5 +36,3 @@ spec:
       targetPort: 9999
       protocol: TCP
       name: http
-  externalIPs:
-    - 10.10.10.10

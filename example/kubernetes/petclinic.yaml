@@ -19,7 +19,7 @@ spec:
         - image: arey/springboot-petclinic
           name: springboot-petclinic
           ports:
-            - containerPort: 8080
+            - containerPort: 9999
 status: {}
 ---
 apiVersion: v1
@@ -31,8 +31,8 @@ spec:
   selector:
     app: petclinic
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 80
+      targetPort: 9999
       protocol: TCP
       name: http
 ---
@@ -51,4 +51,4 @@ spec:
           - path: /*
             backend:
               serviceName: petclinic
-              servicePort: 8080
+              servicePort: 80

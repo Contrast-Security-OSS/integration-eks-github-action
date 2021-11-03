@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME_TAG: 'aws-contrast-webinar:contrast-demo-5'
+  IMAGE_NAME_TAG: 'aws-contrast-webinar:contrast-demo-6'
   APPLICATION_MANIFEST: '/example/kubernetes/petclinic.yaml'
   APPLICATION_DOCKERFILE: '/example/docker/Dockerfile'
   CLUSTER_NAME: 'aws-contrast-webinar'

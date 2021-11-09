@@ -198,6 +198,7 @@ echo "-------------------------------------------"
 
 # configure kubectl to connect to EKS cluster
 echo "++configuring kubectl..."
+aws eks list-clusters
 aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${CLUSTER_NAME}
 echo "++successfully configured kubectl."
 echo "-------------------------------------------"

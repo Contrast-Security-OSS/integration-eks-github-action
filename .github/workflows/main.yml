@@ -20,7 +20,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Contrast Security Amazon Elastic Kubernetes Service Build-Deploy
-      uses: Contrast-Security-OSS/eks-github-action@main
+      uses: Contrast-Security-OSS/integration-eks-github-action@main
       id: contrast-build-deploy
       with:
         application-manifest: ${{ env.APPLICATION_MANIFEST }}

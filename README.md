@@ -23,7 +23,7 @@ Other supported languages coming soon...
     {
       "aws_access_key_id": "xxxxx",
       "aws_secret_access_key": "xxxxx",
-      "aws_default_region": "xxxxx",
+      "aws_region": "xxxxx",
       "aws_container_registry": "xxxxx"
     }
     ```

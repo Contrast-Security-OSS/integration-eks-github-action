@@ -69,6 +69,7 @@ else
     export AWS_ACCESS_KEY_ID=$(cat aws.json | jq -r '.aws_access_key_id')
     export AWS_SECRET_ACCESS_KEY=$(cat aws.json | jq -r '.aws_secret_access_key')
     export AWS_DEFAULT_REGION=$(cat aws.json | jq -r '.aws_region')
+    export AWS_SESSION_TOKEN=$(cat aws.json | jq -r '.aws_session_token')
 #    export AWS_CONTAINER_REGISTRY_USERNAME=$(cat aws.json | jq -r '.aws_container_registry_username')
     echo "parsing, mapping, and configuration complete."
 #    echo "removing aws.json..."

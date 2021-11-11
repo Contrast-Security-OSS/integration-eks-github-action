@@ -20,7 +20,7 @@ inputs:
     description: 'output image name/tag that will be deployed to kubernetes cluster'
     required: true
   cluster-name:
-    description: 'aks cluster name'
+    description: 'eks cluster name'
     required: true
   application-artifact:
     description: 'artifacts location associated with the docker build'

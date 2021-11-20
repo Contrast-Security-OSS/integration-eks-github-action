@@ -7,7 +7,7 @@ Other supported languages coming soon...
 ## Prerequisites
 
 - An AWS User with enough permissions (IAM Roles) to: 
-    - Deploy an application to Amazon Elasatic Kubernetes Service (EKS)
+    - Deploy an application to Amazon Elastic Kubernetes Service (EKS)
     - Deploy a volume
     - Create a secret 
 - A valid Contrast Security account
@@ -55,7 +55,7 @@ Other supported languages coming soon...
   - REQUIRED: true
   - Default: No Default Value
 - `cluster-name`
-  - Description: 'aks cluster name'
+  - Description: 'eks cluster name'
   - REQUIRED: true
   - Default: No Default Value
 - `application-artifact`

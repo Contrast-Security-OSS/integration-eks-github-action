@@ -1,5 +1,5 @@
 #FROM mcr.microsoft.com/azure-cli
-FROM alpine/k8s:1.20.7
+FROM alpine/k8s:1.20.7@sha256:505aecf3cb0d9c28cda7d672ec7d4911fac6684ef50bccf38de6360335f97468
 
 ARG contrast_security_credentials_file
 ARG aws_credentials_file
